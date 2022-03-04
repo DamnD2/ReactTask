@@ -4,14 +4,15 @@ import { useHistory } from 'react-router-dom';
 
 import './SearchAutocompleteItem.scss';
 
-function SearchAutocompleteItem({ cityData, setInputValue }) {
+function SearchAutocompleteItem({ cityData, setInputValue, setIsOpenAutocomplete }) {
   const history = useHistory();
   const handleClick = () => {
     history.push(`/${cityData.id}`);
-    setInputValue('');
+    setInputValue(cityData.name);
+    setTimeout(() => setIsOpenAutocomplete(false), 100);
   };
 
-  const handleKeyUp = ({ key }) => {
+  const handleKeyDown = ({ key }) => {
     if (key === 'Enter') {
       handleClick();
     }
@@ -22,7 +23,7 @@ function SearchAutocompleteItem({ cityData, setInputValue }) {
       className="search__autocomplete-item"
       key={cityData.id}
       onClick={handleClick}
-      onKeyDown={handleKeyUp}
+      onKeyDown={handleKeyDown}
       role="menuitem"
       tabIndex={0}
       data-id={cityData.id}
@@ -35,6 +36,7 @@ function SearchAutocompleteItem({ cityData, setInputValue }) {
 SearchAutocompleteItem.propTypes = {
   cityData: PropTypes.objectOf(PropTypes.any).isRequired,
   setInputValue: PropTypes.func.isRequired,
+  setIsOpenAutocomplete: PropTypes.func.isRequired,
 };
 
 export default SearchAutocompleteItem;
